@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<!--
+  drone.urdf.xacro
+  ================
+  Parametric URDF Model for Autonomous Quadrotor UAV.
+  Author: Member 3 (ROS 2 & System Integration Engineer)
+-->
+<robot name="autonomous_uav" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Physical Properties -->
+  <xacro:property name="drone_mass" value="1.450" />
+  <xacro:property name="arm_length" value="0.225" />
+  <xacro:property name="body_radius" value="0.120" />
+  <xacro:property name="body_height" value="0.065" />
+  <xacro:property name="rotor_radius" value="0.100" />
+  <xacro:property name="rotor_height" value="0.010" />
+
+  <!-- Materials -->
+  <material name="carbon_fiber">
+    <color rgba="0.15 0.15 0.18 1.0" />
+  </material>
+  <material name="cyan_accent">
+    <color rgba="0.22 0.74 0.97 1.0" />
+  </material>
+  <material name="rotor_translucent">
+    <color rgba="0.8 0.8 0.85 0.6" />
+  </material>
+  <material name="lens_glass">
+    <color rgba="0.05 0.05 0.1 0.9" />
+  </material>
+
+  <!-- Base Footprint (Ground Projection) -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Base Link (Center of Mass) -->
+  <link name="base_link">
+    <inertial>
+      <mass value="${drone_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <!-- Realistic 450mm Quadrotor Inertia Tensor (kg*m^2) -->
+      <inertia ixx="0.0142" ixy="0.0" ixz="0.0"
+               iyy="0.0142" iyz="0.0"
+               izz="0.0245"/>
+    </inertial>
+    
+    <!-- Central Fuselage Visual -->
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${body_radius}" length="${body_height}"/>
+      </geometry>
+      <material name="carbon_fiber"/>
+    </visual>
+
+    <!-- Collision Geometry -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${body_radius * 1.1}" length="${body_height * 1.2}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Macro for Rotor Arms and Propellers -->
+  <xacro:macro name="rotor_arm" params="prefix angle dir_sign">
+    <!-- Arm Link -->
+    <link name="arm_${prefix}">
+      <visual>
+        <origin xyz="${arm_length/2} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${arm_length} 0.02 0.015"/>
+        </geometry>
+        <material name="carbon_fiber"/>
+      </visual>
+    </link>
+
+    <joint name="arm_${prefix}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="arm_${prefix}"/>
+      <origin xyz="0 0 0" rpy="0 0 ${angle}"/>
+    </joint>
+
+    <!-- Motor & Rotor -->
+    <link name="rotor_${prefix}">
+      <visual>
+        <origin xyz="0 0 0.015" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${rotor_radius}" length="${rotor_height}"/>
+        </geometry>
+        <material name="rotor_translucent"/>
+      </visual>
+      <inertial>
+        <mass value="0.015"/>
+        <inertia ixx="0.00002" ixy="0" ixz="0" iyy="0.00002" iyz="0" izz="0.00004"/>
+      </inertial>
+    </link>
+
+    <joint name="rotor_${prefix}_joint" type="continuous">
+      <parent link="arm_${prefix}"/>
+      <child link="rotor_${prefix}"/>
+      <origin xyz="${arm_length} 0 0.01" rpy="0 0 0"/>
+      <axis xyz="0 0 ${dir_sign}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- 4 X-Configuration Arms (45, 135, 225, 315 deg) -->
+  <xacro:rotor_arm prefix="front_right" angle="${pi/4}" dir_sign="-1"/>
+  <xacro:rotor_arm prefix="front_left"  angle="${3*pi/4}" dir_sign="1"/>
+  <xacro:rotor_arm prefix="back_left"   angle="${5*pi/4}" dir_sign="-1"/>
+  <xacro:rotor_arm prefix="back_right"  angle="${7*pi/4}" dir_sign="1"/>
+
+  <!-- RGB-D Visual SLAM & AI Camera (Intel RealSense D435i / OAK-D) -->
+  <link name="camera_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.090 0.025"/>
+      </geometry>
+      <material name="cyan_accent"/>
+    </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <!-- Mounted 12cm Forward, 5cm Up, 15 deg downward pitch tilt -->
+    <origin xyz="0.12 0.0 0.05" rpy="0 0.2618 0"/>
+  </joint>
+
+  <!-- Camera Optical Frame (X-Right, Y-Down, Z-Forward) -->
+  <link name="camera_optical_frame"/>
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="camera_optical_frame"/>
+    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+  </joint>
+
+  <!-- IMU Sensor Link -->
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 2D/3D Lidar Laser Scanner Link -->
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.035" length="0.04"/>
+      </geometry>
+      <material name="carbon_fiber"/>
+    </visual>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.065" rpy="0 0 0"/>
+  </joint>
+
+</robot>

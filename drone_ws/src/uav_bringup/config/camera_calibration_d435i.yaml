@@ -1,0 +1,30 @@
+# camera_calibration_d435i.yaml
+# Optical Intrinsics and Distortion Parameters for Intel RealSense D435i (1280x720)
+# Used by Member 3 (TF2 Manager) & Member 4 (ORB-SLAM3)
+
+image_width: 1280
+image_height: 720
+camera_name: d435i_color_optical_frame
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [913.625,   0.0,     642.148,
+           0.0,   914.051,   361.820,
+           0.0,     0.0,       1.0   ]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.0821, -0.0614, 0.0012, -0.0008, 0.0000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.0, 0.0, 0.0,
+         0.0, 1.0, 0.0,
+         0.0, 0.0, 1.0]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [913.625,   0.0,     642.148,  0.0,
+           0.0,   914.051,   361.820,  0.0,
+           0.0,     0.0,       1.0,    0.0]
