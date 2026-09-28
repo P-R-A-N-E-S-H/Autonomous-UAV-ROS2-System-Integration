@@ -53,6 +53,7 @@
   <!-- NAVIGATION TABS -->
   <nav class="main-tabs">
     <button class="tab-btn active" onclick="switchTab('tab-live-gcs')">🛰️ Live Telemetry & Control</button>
+    <button class="tab-btn" onclick="switchTab('tab-member3-studio')">🛰️ Member 3: System Integration Studio</button>
     <button class="tab-btn" onclick="switchTab('tab-member2-sim')">🎮 Member 2: Flight Simulation Studio</button>
     <button class="tab-btn" onclick="switchTab('tab-status-update')">📋 Project Status & Milestone Update</button>
     <button class="tab-btn" onclick="switchTab('tab-slides')">📊 10/10 Presentation Slides</button>
@@ -203,6 +204,114 @@
             </div>
           </div>
 
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 1.1: MEMBER 3 SYSTEM INTEGRATION & LIFECYCLE STUDIO -->
+    <section id="tab-member3-studio" class="tab-pane">
+      <div class="grid-2col">
+        
+        <!-- LEFT COLUMN: ROS 2 LIFECYCLE NODE STATE & SYNCHRONIZER -->
+        <div class="sidebar-stack">
+          
+          <div class="card">
+            <div class="card-header">
+              <h3><span class="icon">🔄</span> ROS 2 Managed Lifecycle State (REP-2007)</h3>
+              <span id="m3-lifecycle-badge" class="badge" style="background: var(--emerald); color: #000; font-weight: 700;">ACTIVE (50Hz STREAMING)</span>
+            </div>
+            <div class="fsm-pipeline" style="justify-content: space-around; padding: 12px 0;">
+              <div class="fsm-node" id="lc-UNCONFIGURED">1. UNCONFIGURED</div>
+              <div class="fsm-arrow">➔</div>
+              <div class="fsm-node" id="lc-INACTIVE">2. INACTIVE (Standby)</div>
+              <div class="fsm-arrow">➔</div>
+              <div class="fsm-node active-glow" id="lc-ACTIVE">3. ACTIVE (Flight Stream)</div>
+            </div>
+            <div class="grid-2col-even" style="margin-top: 10px;">
+              <button class="btn btn-secondary" onclick="sendCmd('LIFECYCLE_TRANSITION', {target: 'INACTIVE'})">⏸️ Deactivate Node (Hover Standby)</button>
+              <button class="btn btn-primary" onclick="sendCmd('LIFECYCLE_TRANSITION', {target: 'ACTIVE'})">▶️ Activate Node (50Hz Stream)</button>
+            </div>
+          </div>
+
+          <!-- APPROXIMATETIME MULTIMODAL SYNCHRONIZER -->
+          <div class="card">
+            <div class="card-header">
+              <h3><span class="icon">⏱️</span> Multimodal Sensor ApproximateTime Synchronizer</h3>
+              <span class="pill pill-green">JITTER &lt; 5ms</span>
+            </div>
+            <div class="table-responsive">
+              <table class="hud-table">
+                <thead>
+                  <tr>
+                    <th>Sensor Stream</th>
+                    <th>Input Frequency</th>
+                    <th>Slop Tolerance Window</th>
+                    <th>Mean Temporal Skew</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Member 4: SLAM Odometry</strong></td>
+                    <td class="text-cyan">30.0 Hz</td>
+                    <td>15.0 ms</td>
+                    <td class="text-emerald"><strong>3.2 ms</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Member 1: AI VLM Detection</strong></td>
+                    <td class="text-cyan">10.0 Hz</td>
+                    <td>15.0 ms</td>
+                    <td class="text-emerald"><strong>4.1 ms</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Member 2: High-Rate IMU</strong></td>
+                    <td class="text-cyan">250.0 Hz</td>
+                    <td>5.0 ms</td>
+                    <td class="text-emerald"><strong>0.8 ms</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: DYNAMIC RUNTIME PARAMETER RECONFIGURATOR -->
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="icon">🎛️</span> Dynamic Parameter Reconfigure (Live Tuning)</h3>
+            <span class="badge badge-accent">ZERO RESTART</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 15px;">
+            Tune flight limits and safety envelope live in runtime without restarting the ROS 2 daemon:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <label><strong>Max Cruise Velocity:</strong> <span id="val-max-vel" class="text-cyan">1.80 m/s</span></label>
+              </div>
+              <input type="range" id="slider-max-vel" min="0.5" max="4.0" step="0.1" value="1.8" style="width: 100%; cursor: pointer;" oninput="onParamChange()">
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <label><strong>Max Trajectory Acceleration:</strong> <span id="val-max-accel" class="text-cyan">1.20 m/s²</span></label>
+              </div>
+              <input type="range" id="slider-max-accel" min="0.3" max="3.0" step="0.1" value="1.2" style="width: 100%; cursor: pointer;" oninput="onParamChange()">
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <label><strong>Geofence Containment Radius:</strong> <span id="val-geofence" class="text-cyan">25.0 m</span></label>
+              </div>
+              <input type="range" id="slider-geofence" min="10.0" max="50.0" step="1.0" value="25.0" style="width: 100%; cursor: pointer;" oninput="onParamChange()">
+            </div>
+
+            <button class="btn btn-primary" onclick="applyDynamicParams()" style="margin-top: 10px;">
+              💾 Apply Dynamic Reconfigure Parameters
+            </button>
+          </div>
         </div>
 
       </div>

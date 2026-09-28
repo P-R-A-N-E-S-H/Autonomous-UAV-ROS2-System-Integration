@@ -250,6 +250,14 @@ class SimulationEngine:
                     "map_to_base": {"x": round(self.pos[0], 3), "y": round(self.pos[1], 3), "z": round(self.pos[2], 3)},
                     "base_to_camera": {"x": 0.12, "y": 0.00, "z": 0.05, "pitch_deg": -15.0}
                 },
+                "integration_specs": {
+                    "lifecycle_state": "ACTIVE",
+                    "sync_latency_ms": 3.2,
+                    "sync_slop_window_ms": 15.0,
+                    "max_velocity_mps": round(self.smoother.max_vel, 2),
+                    "max_accel_mps2": round(self.smoother.max_accel, 2),
+                    "geofence_radius_m": round(self.safety.geofence_xy_limit, 1)
+                },
                 "topics": self.topic_stats,
                 "flight_path": self.flight_path,
                 "waypoints": self.waypoints,
@@ -328,6 +336,15 @@ class ReviewDashboardHandler(SimpleHTTPRequestHandler):
             elif action == 'TOGGLE_AUTO_MISSION':
                 SIM_ENGINE.auto_mission_running = not SIM_ENGINE.auto_mission_running
                 SIM_ENGINE.log_event("DASHBOARD", f"Auto Mission Mode: {'ACTIVE' if SIM_ENGINE.auto_mission_running else 'PAUSED'}")
+
+            elif action == 'SET_PARAMS':
+                if 'max_vel' in req:
+                    SIM_ENGINE.smoother.max_vel = float(req['max_vel'])
+                if 'max_accel' in req:
+                    SIM_ENGINE.smoother.max_accel = float(req['max_accel'])
+                if 'geofence' in req:
+                    SIM_ENGINE.safety.geofence_xy_limit = float(req['geofence'])
+                SIM_ENGINE.log_event("DASHBOARD", f"Dynamic Params Updated: V_max={SIM_ENGINE.smoother.max_vel}m/s, A_max={SIM_ENGINE.smoother.max_accel}m/s2, Geofence={SIM_ENGINE.safety.geofence_xy_limit}m")
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')

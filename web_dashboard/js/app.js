@@ -177,3 +177,25 @@ function sendVLMGoal(prompt, className, targetCoords) {
     target: targetCoords
   });
 }
+
+function onParamChange() {
+  const vel = document.getElementById('slider-max-vel').value;
+  const accel = document.getElementById('slider-max-accel').value;
+  const geofence = document.getElementById('slider-geofence').value;
+
+  document.getElementById('val-max-vel').textContent = `${parseFloat(vel).toFixed(2)} m/s`;
+  document.getElementById('val-max-accel').textContent = `${parseFloat(accel).toFixed(2)} m/s²`;
+  document.getElementById('val-geofence').textContent = `${parseFloat(geofence).toFixed(1)} m`;
+}
+
+function applyDynamicParams() {
+  const vel = parseFloat(document.getElementById('slider-max-vel').value);
+  const accel = parseFloat(document.getElementById('slider-max-accel').value);
+  const geofence = parseFloat(document.getElementById('slider-geofence').value);
+
+  sendCmd('SET_PARAMS', {
+    max_vel: vel,
+    max_accel: accel,
+    geofence: geofence
+  });
+}
