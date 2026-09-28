@@ -1,0 +1,62 @@
+# ardupilot_sitl_quad.parm
+# ArduPilot SITL 4.5+ Configuration for GPS-Denied Autonomous Indoor Navigation
+# Author: Member 2 (Simulation & Flight Stack Engineer)
+
+# EKF3 Configuration for External Visual Odometry (ORB-SLAM3 / RTAB-Map)
+AHRS_EKF_TYPE 3
+EK3_ENABLE 1
+EK2_ENABLE 0
+EK3_SRC_OPTIONS 0
+EK3_SRC1_POSXY 6
+EK3_SRC1_VELXY 6
+EK3_SRC1_POSZ 1
+EK3_SRC1_YAW 6
+
+# Indoor Navigation without Compass (Eliminates Metal Structure Interference)
+COMPASS_USE 0
+COMPASS_USE2 0
+COMPASS_USE3 0
+COMPASS_ENABLE 0
+
+# Vision Position Estimation Offsets & Delays
+VISO_TYPE 1
+VISO_POS_X 0.12
+VISO_POS_Y 0.00
+VISO_POS_Z 0.05
+VISO_DELAY_MS 35
+
+# Arming and Safety Bypasses for Automated SITL Benchmarking
+ARMING_CHECK 0
+DISARM_DELAY 5
+FS_GCS_ENABLE 0
+FS_THR_ENABLE 1
+FS_BATT_ENABLE 2
+FS_BATT_VOLT 14.0
+FS_BATT_MAH 800
+
+# Autonomous Waypoint Speeds & Accelerations
+WPNAV_SPEED 180.0
+WPNAV_SPEED_UP 100.0
+WPNAV_SPEED_DN 80.0
+WPNAV_ACCEL 120.0
+WPNAV_ACCEL_Z 100.0
+WPNAV_RADIUS 35.0
+
+# Quadrotor Rate PID Tuning Parameters
+ATC_RAT_RLL_P 0.1350
+ATC_RAT_RLL_I 0.1350
+ATC_RAT_RLL_D 0.0036
+ATC_RAT_PIT_P 0.1350
+ATC_RAT_PIT_I 0.1350
+ATC_RAT_PIT_D 0.0036
+ATC_RAT_YAW_P 0.1800
+ATC_RAT_YAW_I 0.0180
+ATC_RAT_YAW_D 0.0000
+
+# Frame and Motors Configuration (X Quad)
+FRAME_CLASS 1
+FRAME_TYPE 1
+MOT_PWM_TYPE 0
+MOT_SPIN_ARM 0.10
+MOT_SPIN_MIN 0.15
+MOT_SPIN_MAX 0.95
