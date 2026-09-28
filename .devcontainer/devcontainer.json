@@ -1,0 +1,16 @@
+{
+  "name": "ROS 2 Jazzy UAV System Integration",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "uav_system_orchestrator",
+  "workspaceFolder": "/ros2_ws",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-iot.vscode-ros",
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "redhat.vscode-yaml"
+      ]
+    }
+  }
+}
