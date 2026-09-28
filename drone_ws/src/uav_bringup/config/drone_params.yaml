@@ -1,0 +1,28 @@
+# drone_params.yaml
+# Dynamic Kinematic & Orchestrator Configuration
+
+/**:
+  ros__parameters:
+    # Flight Limits
+    takeoff_altitude: 2.5
+    acceptance_radius: 0.35
+    max_horizontal_velocity: 2.0
+    max_vertical_velocity: 1.0
+    max_yaw_rate_rad_s: 0.785
+    max_acceleration: 1.2
+
+    # Safety Thresholds
+    geofence:
+      enabled: true
+      max_radius_xy: 25.0
+      max_altitude_z: 12.0
+      min_altitude_z: 0.2
+
+    battery_failsafe:
+      warning_pct: 25.0
+      rth_trigger_pct: 18.0
+      land_trigger_pct: 10.0
+
+    slam_watchdog:
+      tracking_timeout_seconds: 0.35
+      recovery_hover_duration: 3.0

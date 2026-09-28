@@ -1,0 +1,9 @@
+# TriggerFailsafe.srv
+# Emergency trigger service for Safety Supervisor
+
+string reason
+string requested_mode # HOVER, RTH, LAND, DISARM
+---
+bool success
+string active_failsafe_state
+string message

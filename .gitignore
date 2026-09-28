@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.pytest_cache/
+
+# ROS 2 Build directories
+drone_ws/build/
+drone_ws/install/
+drone_ws/log/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

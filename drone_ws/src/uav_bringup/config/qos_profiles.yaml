@@ -1,0 +1,35 @@
+# qos_profiles.yaml
+# DDS Quality of Service (QoS) Configuration Matrix
+# Member 3: ROS2 & System Integration Engineer
+
+qos_profiles:
+  # Flight Critical Setpoints (High Reliability, Low Latency)
+  flight_setpoints:
+    reliability: "RELIABLE"
+    durability: "VOLATILE"
+    history: "KEEP_LAST"
+    depth: 10
+    deadline_ms: 25.0
+    liveliness: "AUTOMATIC"
+    lease_duration_ms: 100.0
+
+  # High Frequency Visual Odometry & SLAM (Loss-Tolerant, Min Latency)
+  visual_odometry:
+    reliability: "BEST_EFFORT"
+    durability: "VOLATILE"
+    history: "KEEP_LAST"
+    depth: 5
+    deadline_ms: 35.0
+
+  # High-Level Semantic Goals & Mission Commands
+  semantic_commands:
+    reliability: "RELIABLE"
+    durability: "TRANSIENT_LOCAL"
+    history: "KEEP_LAST"
+    depth: 20
+
+  # Emergency Failsafe Triggers & Alarms
+  safety_alerts:
+    reliability: "RELIABLE"
+    durability: "TRANSIENT_LOCAL"
+    history: "KEEP_ALL"

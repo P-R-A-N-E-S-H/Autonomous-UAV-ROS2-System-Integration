@@ -1,0 +1,44 @@
+# mission_waypoints.yaml
+# Autonomous Search and Inspection Survey Waypoints
+
+mission_id: "INSPECTION_MISSION_ALPHA_01"
+loop_pattern: false
+default_cruise_velocity: 1.5
+
+waypoints:
+  - id: 1
+    description: "Launch & Initial Ascend Station"
+    x: 0.0
+    y: 0.0
+    z: 2.5
+    dwell_time_sec: 2.0
+  - id: 2
+    description: "North-East Warehouse Sector"
+    x: 4.5
+    y: 3.2
+    z: 2.5
+    dwell_time_sec: 4.0
+  - id: 3
+    description: "Hazardous Chemical Storage Bay"
+    x: -3.8
+    y: 6.1
+    z: 2.0
+    dwell_time_sec: 5.0
+  - id: 4
+    description: "South Emergency Exit Corridor"
+    x: 6.0
+    y: -1.0
+    z: 2.2
+    dwell_time_sec: 3.0
+  - id: 5
+    description: "Survivor Staging Area Pad Alpha"
+    x: 1.2
+    y: -4.5
+    z: 1.8
+    dwell_time_sec: 3.0
+  - id: 6
+    description: "Backtrack to Launch Point for Touchdown"
+    x: 0.0
+    y: 0.0
+    z: 2.5
+    dwell_time_sec: 1.0

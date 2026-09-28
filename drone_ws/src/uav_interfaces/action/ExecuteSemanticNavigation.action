@@ -1,0 +1,22 @@
+# ExecuteSemanticNavigation.action
+# Asynchronous long-running action for AI-driven semantic missions
+
+# Goal Definition
+string natural_language_prompt
+string semantic_target
+geometry_msgs/PoseStamped optional_hint_pose
+float32 timeout_sec
+---
+# Result Definition
+bool success
+string final_state
+float32 elapsed_time_sec
+geometry_msgs/PoseStamped final_pose
+string detected_object_class
+---
+# Feedback Definition
+string current_substate
+float32 distance_to_goal_meters
+float32 current_speed_mps
+float32 time_elapsed_sec
+bool visual_contact_established

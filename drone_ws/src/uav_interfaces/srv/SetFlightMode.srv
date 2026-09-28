@@ -1,0 +1,9 @@
+# SetFlightMode.srv
+# Service to transition high-level orchestrator modes
+
+string target_mode # ARMED, TAKEOFF, HOVER, SEMANTIC_NAV, WAYPOINTS, RTH, LAND
+float32 target_altitude
+---
+bool success
+string current_mode
+string message

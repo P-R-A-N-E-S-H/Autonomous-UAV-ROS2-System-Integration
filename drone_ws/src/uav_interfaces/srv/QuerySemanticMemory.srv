@@ -1,0 +1,12 @@
+# QuerySemanticMemory.srv
+# Service request between System Orchestrator and Member 5 (Semantic Memory)
+
+string query_prompt
+string class_filter
+float32 max_search_radius_meters
+---
+bool found
+geometry_msgs/PoseStamped target_pose
+string landmark_description
+float32 confidence_score
+uint32 observation_count
