@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>uav_gazebo_sim</name>
+  <version>1.0.0</version>
+  <description>Gazebo Harmonic Simulation Environment and Worlds for Autonomous UAV</description>
+  <maintainer email="member2.sim@drone-ai.org">Member 2 (Simulation &amp; Flight Stack Engineer)</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
