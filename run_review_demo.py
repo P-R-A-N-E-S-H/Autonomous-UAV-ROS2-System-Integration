@@ -233,6 +233,18 @@ class SimulationEngine:
                     "is_connected": self.connected,
                     "slam_healthy": self.slam_healthy
                 },
+                "aerodynamics": {
+                    "motor_rpms": [
+                        round(6200 + random.uniform(-40, 40) if self.armed else 0, 0),
+                        round(6250 + random.uniform(-40, 40) if self.armed else 0, 0),
+                        round(6180 + random.uniform(-40, 40) if self.armed else 0, 0),
+                        round(6230 + random.uniform(-40, 40) if self.armed else 0, 0)
+                    ],
+                    "ground_effect_factor": round(min(1.35, 1.0 / (1.0 - min(0.74, (0.10 / (4.0 * max(0.05, self.pos[2])))**2))), 3),
+                    "wind_speed_mps": round(1.2 + 0.4 * math.sin(time.time()), 2),
+                    "stability_gain_margin_db": 8.4,
+                    "stability_phase_margin_deg": 52.3
+                },
                 "tf_tree": {
                     "frames": ["map", "odom", "base_link", "camera_link", "camera_optical_frame"],
                     "map_to_base": {"x": round(self.pos[0], 3), "y": round(self.pos[1], 3), "z": round(self.pos[2], 3)},

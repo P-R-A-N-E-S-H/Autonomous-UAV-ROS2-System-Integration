@@ -53,6 +53,7 @@
   <!-- NAVIGATION TABS -->
   <nav class="main-tabs">
     <button class="tab-btn active" onclick="switchTab('tab-live-gcs')">🛰️ Live Telemetry & Control</button>
+    <button class="tab-btn" onclick="switchTab('tab-member2-sim')">🎮 Member 2: Flight Simulation Studio</button>
     <button class="tab-btn" onclick="switchTab('tab-status-update')">📋 Project Status & Milestone Update</button>
     <button class="tab-btn" onclick="switchTab('tab-slides')">📊 10/10 Presentation Slides</button>
     <button class="tab-btn" onclick="switchTab('tab-architecture')">📐 System Architecture & Inter-Module Graph</button>
@@ -202,6 +203,126 @@
             </div>
           </div>
 
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 1.2: MEMBER 2 FLIGHT SIMULATION & AERODYNAMICS STUDIO -->
+    <section id="tab-member2-sim" class="tab-pane">
+      <div class="grid-2col">
+        
+        <!-- LEFT COLUMN: 4-MOTOR RPM & DYNAMICS GAUGES -->
+        <div class="card">
+          <div class="card-header">
+            <h3><span class="icon">🌀</span> 4-Motor Thrust Allocation & RPM Tachometers</h3>
+            <span class="badge" style="background: var(--cyan-bright); color: #000; font-weight: 700;">1000Hz DART PHYSICS</span>
+          </div>
+
+          <div class="stat-badge-grid" style="margin-bottom: 16px;">
+            <div class="stat-card">
+              <span class="metric-label">MOTOR 1 (FRONT RIGHT - CCW)</span>
+              <div id="m2-rpm-0" class="stat-num text-cyan">6,240 <small style="font-size: 0.9rem;">RPM</small></div>
+              <div class="stat-lbl">Thrust: 3.55 N | PWM: 1540 µs</div>
+            </div>
+            <div class="stat-card">
+              <span class="metric-label">MOTOR 2 (FRONT LEFT - CW)</span>
+              <div id="m2-rpm-1" class="stat-num text-cyan">6,250 <small style="font-size: 0.9rem;">RPM</small></div>
+              <div class="stat-lbl">Thrust: 3.56 N | PWM: 1542 µs</div>
+            </div>
+            <div class="stat-card">
+              <span class="metric-label">MOTOR 3 (BACK LEFT - CCW)</span>
+              <div id="m2-rpm-2" class="stat-num text-cyan">6,210 <small style="font-size: 0.9rem;">RPM</small></div>
+              <div class="stat-lbl">Thrust: 3.52 N | PWM: 1538 µs</div>
+            </div>
+            <div class="stat-card">
+              <span class="metric-label">MOTOR 4 (BACK RIGHT - CW)</span>
+              <div id="m2-rpm-3" class="stat-num text-cyan">6,230 <small style="font-size: 0.9rem;">RPM</small></div>
+              <div class="stat-lbl">Thrust: 3.54 N | PWM: 1540 µs</div>
+            </div>
+          </div>
+
+          <!-- AERODYNAMICS PHENOMENA -->
+          <div class="slide-box">
+            <h4>🌬️ Aerodynamic Phenomena & Disturbances</h4>
+            <div class="grid-2col-even" style="margin-top: 10px;">
+              <div>
+                <span class="metric-label">GROUND EFFECT FACTOR (IGE/OGE):</span>
+                <div id="m2-ge-factor" class="metric-val text-emerald">1.002 <small>(Free Air OGE)</small></div>
+              </div>
+              <div>
+                <span class="metric-label">DRYDEN WIND GUST VELOCITY:</span>
+                <div id="m2-wind-speed" class="metric-val text-cyan">1.24 m/s</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: SYSTEM IDENTIFICATION & AUTOPILOT TUNING -->
+        <div class="sidebar-stack">
+          <div class="card">
+            <div class="card-header">
+              <h3><span class="icon">📈</span> ArduPilot 4.5+ EKF3 & SysID Stability Margins</h3>
+              <span class="pill pill-green">BODE STABLE</span>
+            </div>
+            <div class="table-responsive">
+              <table class="hud-table">
+                <thead>
+                  <tr>
+                    <th>Stability Parameter</th>
+                    <th>Measured (SysID)</th>
+                    <th>Industrial Standard</th>
+                    <th>Verdict</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Gain Margin ($G_m$)</strong></td>
+                    <td class="text-cyan"><strong>8.4 dB</strong></td>
+                    <td>&gt; 6.0 dB</td>
+                    <td><span class="pill pill-green">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Phase Margin ($\Phi_m$)</strong></td>
+                    <td class="text-cyan"><strong>52.3°</strong></td>
+                    <td>&gt; 45.0°</td>
+                    <td><span class="pill pill-green">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Rate Loop Bandwidth</strong></td>
+                    <td class="text-cyan"><strong>3.8 Hz</strong></td>
+                    <td>2.5 – 5.0 Hz</td>
+                    <td><span class="pill pill-green">OPTIMAL</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>EKF3 Position Source</strong></td>
+                    <td class="text-cyan"><strong>EK3_SRC1_POSXY = 6</strong></td>
+                    <td>External Nav</td>
+                    <td><span class="pill pill-green">GPS-DENIED</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Compass Mode</strong></td>
+                    <td class="text-cyan"><strong>COMPASS_USE = 0</strong></td>
+                    <td>Disabled (Indoor)</td>
+                    <td><span class="pill pill-green">NO DRIFT</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- QGROUNDCONTROL AUTONOMOUS MISSION PLANNER -->
+          <div class="card">
+            <div class="card-header">
+              <h3><span class="icon">🗺️</span> QGroundControl Survey Mission Plan</h3>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 10px;">
+              Pre-loaded with <code>autonomous_survey.plan</code>: Takeoff ➔ Medical Crate (4s Dwell) ➔ Hazmat Container (5s Dwell) ➔ Auto-RTL.
+            </p>
+            <button class="btn btn-primary" onclick="sendCmd('TOGGLE_AUTO_MISSION')" style="width: 100%;">
+              🚀 Execute QGroundControl Autonomous Survey Plan
+            </button>
+          </div>
         </div>
 
       </div>

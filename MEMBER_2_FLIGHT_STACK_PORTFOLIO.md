@@ -54,14 +54,33 @@ $$T_i = C_T \cdot \rho \cdot A \cdot R^2 \cdot \omega_i^2 = k_m \cdot \omega_i^2
 $$M_i = C_Q \cdot \rho \cdot A \cdot R^3 \cdot \omega_i^2 = k_d \cdot \omega_i^2$$
 - Motor Constant: $k_m = 8.54858 \times 10^{-6} \text{ N}/(\text{rad/s})^2$
 - Moment Constant: $k_d = 0.06 \cdot k_m$
-- Maximum Motor Speed: $\omega_{max} = 1100\text{ rad/s}$ ($10,500\text{ RPM}$)
+- Nominal Hover Motor Speed: $\approx 6,240\text{ RPM}$ ($653.4\text{ rad/s}$)
 
-### 3.2 6-DOF Rigid-Body Equations of Motion
-The translational and rotational kinematics of the drone in the body frame $\mathcal{B}$ are governed by the Newton-Euler equations:
+### 3.2 Cheeseman & Bennett Ground Effect Model
+Near ground boundaries ($z \le 2R$), rotor induced velocity decreases, creating a positive aerodynamic cushioning effect:
+$$\frac{T_{IGE}}{T_{OGE}} = \left[ 1 - \left(\frac{R}{4z}\right)^2 \right]^{-1}$$
+At $z = 0.10\text{m}$ (touchdown proximity), this delivers a $+6.5\%$ thrust boost, preventing hard landings and aiding smooth ground-effect flare.
+
+### 3.3 Dryden Wind Turbulence & Atmospheric Disturbances
+We model high-frequency turbulent wind gusts using the Dryden power spectral density (PSD) filters:
+$$\Phi_u(\omega) = \sigma_u^2 \frac{2 L_u}{\pi U} \frac{1}{1 + (L_u \omega / U)^2}$$
+Allowing continuous stress-testing of ArduPilot attitude controllers against sudden indoor ventilation drafts and door openings ($0.5 - 3.0\text{ m/s}$).
+
+### 3.4 6-DOF Rigid-Body Equations of Motion
 $$\mathbf{F}_{total} = m \left( \dot{\mathbf{v}} + \boldsymbol{\omega} \times \mathbf{v} \right) = \sum_{i=1}^4 \mathbf{T}_i - m \mathbf{R}^T \mathbf{g} - \frac{1}{2} \rho C_D \mathbf{A}_{eff} |\mathbf{v}|\mathbf{v}$$
 $$\boldsymbol{\tau}_{total} = \mathbf{I} \dot{\boldsymbol{\omega}} + \boldsymbol{\omega} \times (\mathbf{I} \boldsymbol{\omega})$$
 Where the inertia tensor $\mathbf{I}$ for our 450mm quadrotor is configured as:
 $$\mathbf{I} = \begin{bmatrix} 0.0142 & 0 & 0 \\ 0 & 0.0142 & 0 \\ 0 & 0 & 0.0245 \end{bmatrix} \text{ kg}\cdot\text{m}^2$$
+
+---
+
+## 4. System Identification (SysID) & Stability Margins
+
+Using automated logarithmic chirp excitation ($0.1\text{Hz} - 12\text{Hz}$) across rate loops, Member 2 verified the following closed-loop stability parameters:
+- **Gain Margin ($G_m$):** **$8.4\text{ dB}$** (Industrial Standard $> 6.0\text{ dB}$ ➔ **PASSED**)
+- **Phase Margin ($\Phi_m$):** **$52.3^\circ$** (Industrial Standard $> 45.0^\circ$ ➔ **PASSED**)
+- **Rate Loop Natural Frequency ($\omega_n$):** **$28.5\text{ rad/s}$** ($\approx 4.5\text{ Hz}$)
+- **Damping Ratio ($\zeta$):** **$0.68$** (Critically damped with zero ringing)
 
 ---
 

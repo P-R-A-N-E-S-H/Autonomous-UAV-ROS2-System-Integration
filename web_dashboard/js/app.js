@@ -135,6 +135,19 @@ function updateUI(t) {
       `|  0.000   0.000   0.000 |  1.000 |`;
   }
 
+  // 4.5 Member 2 Aerodynamics & Motor Gauges
+  if (t.aerodynamics) {
+    const rpms = t.aerodynamics.motor_rpms || [0, 0, 0, 0];
+    for (let i = 0; i < 4; i++) {
+      const el = document.getElementById(`m2-rpm-${i}`);
+      if (el) el.innerHTML = `${rpms[i].toLocaleString()} <small style="font-size: 0.9rem;">RPM</small>`;
+    }
+    const geEl = document.getElementById('m2-ge-factor');
+    if (geEl) geEl.innerHTML = `${t.aerodynamics.ground_effect_factor} <small>${t.drone.position.z < 0.3 ? '(Ground Effect Boost)' : '(Free Air OGE)'}</small>`;
+    const windEl = document.getElementById('m2-wind-speed');
+    if (windEl) windEl.textContent = `${t.aerodynamics.wind_speed_mps} m/s`;
+  }
+
   // 5. Event Logs
   const logBox = document.getElementById('event-log-container');
   if (logBox && t.events) {
